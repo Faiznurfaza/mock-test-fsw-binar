@@ -5,13 +5,13 @@ module.exports = {
     try {
       const Lists = await List.findAll({
         where: {
-          user_id: req.session.userid,
+          user_id: req.params.id,
         },
       });
       return res.status(200).json({
         status: "Success",
         message: "Get all Todo List Success",
-        data: Lists,
+        list: Lists,
       });
     } catch (error) {
       console.log(error);
@@ -25,13 +25,15 @@ module.exports = {
           message: "List cant be empty",
         });
       const newList = await List.create({
-        user_id: req.session.userid,
+        user_id: req.params.id,
         list: req.body.list,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
       return res.status(201).json({
         status: "Success",
         message: "Added new list",
-        data: newList,
+        list: newList,
       });
     } catch (error) {
       return res.status(500).json({
@@ -45,12 +47,7 @@ module.exports = {
     try {
       const id = req.params.id;
       const list = req.body.list;
-      const existingList = await List.findOne({
-        where: {
-          user_id: req.session.userid,
-          id: id,
-        },
-      });
+      const existingList = await List.findByPk(id);
 
       if (!existingList)
         return res.status(404).json({
@@ -66,6 +63,7 @@ module.exports = {
       return res.status(200).json({
         status: "Success",
         message: "Data updated",
+        list: existingList,
       });
     } catch (error) {
       return res.status(500).json({

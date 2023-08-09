@@ -8,6 +8,7 @@ const router = require('./routes');
 const bodyParser = require("body-parser");
 
 const app = express()
+app.use(cookieParser())
 
 app.use(cors())
 app.use(session({
@@ -19,7 +20,7 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
-app.use(cookieParser())
+
 app.use(router)
 
 app.listen(3000, () => {

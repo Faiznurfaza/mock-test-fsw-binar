@@ -55,20 +55,10 @@ module.exports = {
       return res.status(200).json({
         status: "Success",
         message: "Login Success",
+        user: existingUser
       });
     } catch (error) {
       console.log(error);
     }
-  },
-  logout: async (req, res) => {
-    try {
-      req.session.destroy();
-      res.json({
-        status: "Success",
-        message: "Logout success",
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  },
+  }
 };
